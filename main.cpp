@@ -11,17 +11,6 @@ int pixel(int x, int y, int pixelSize) {
     return 0;
 }
 
-int errorCalc(int dx, int dy, int mode) {
-    return 0;
-}
-
-int quadLine(int x0, int y0, int x1, int y1, int pixelSize) {
-    int dy = abs(y1 - y0);
-    int dx = abs(x1 - x0);
-    brese(x0, y0, x1, y1, pixelSize, true);
-    return 0;
-}
-
 int brese(int x0, int y0, int x1, int y1, int pixelSize, bool midpoint = false) {
     int dy = abs(y1 - y0);
     int dx = abs(x1 - x0);
@@ -38,7 +27,7 @@ int brese(int x0, int y0, int x1, int y1, int pixelSize, bool midpoint = false) 
     };
     if (midpoint == false) {
         error = 2*dy - dx;
-    } else { 
+    } else {
         delay++;
         int ey = dy;
         int ex = 0;
@@ -52,7 +41,6 @@ int brese(int x0, int y0, int x1, int y1, int pixelSize, bool midpoint = false) 
         error = ey - ex;
     };
     for(int i; i < delay; i++) {
-        
     }
     pixel(0, 0, pixelSize);
     return 0;
@@ -60,13 +48,15 @@ int brese(int x0, int y0, int x1, int y1, int pixelSize, bool midpoint = false) 
 
 int main() {
     //initiate window to correct size
+    std::cout << "SUCCESSFUL";
     int size = 31;
     int pixelSize = 40;
     int resolution = pixelSize * size;
     initwindow(resolution, resolution);
     //grid creation
-    for (int i = 0; i = resolution; i += pixelSize) {
-        std::cout << i << "\n";
+    for (int i = 0; i < resolution; i += pixelSize) {
+        //std::cout << i << "\n";
+        std::cout << "TEST";
         rectangle(i, 0, i, resolution);
         rectangle(0, i, resolution, i);
     };
@@ -75,3 +65,13 @@ int main() {
     getch();
     return 0;
 };
+
+int errorCalc(int dx, int dy, int mode) {
+    return 0;
+}
+int quadLine(int x0, int y0, int x1, int y1, int pixelSize) {
+    //int dy = abs(y1 - y0);
+    //int dx = abs(x1 - x0);
+    //brese(x0, y0, x1, y1, pixelSize, true);
+    return 0;
+}
