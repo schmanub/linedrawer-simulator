@@ -1,13 +1,13 @@
 #include <iostream>
 #include <graphics.h>
 #include <unistd.h>
-//test
+
 //Created with/for SDL_bgi
 
 int pixel(int x, int y, int pixelSize) {
     setfillstyle(SOLID_FILL, WHITE);
-    rectangle(x, ((getmaxy() - y)), x + pixelSize, ((getmaxy()) - y) - pixelSize);
-    floodfill(x+1, (getmaxy() - y) - 1, WHITE);
+    //rectangle(x*pixelSize, ((getmaxy() - y)*pixelSize), (x*pixelSize) + pixelSize, (((getmaxy()) - y)*pixelSize) - pixelSize);
+    floodfill(x*pixelSize+1, (getmaxy() - y*pixelSize) - 1, WHITE);
     return 0;
 }
 
@@ -17,15 +17,17 @@ int brese(int x0, int y0, int x1, int y1, int pixelSize, bool midpoint = false) 
     const int cx = x0 < x1 ? 1 : -1;
     const int cy = y0 < y1 ? 1 : -1;
     int error;
-    int delay = round(abs(dx)/4);
-    int flip = 0;
+    //int delay = round(abs(dx)/4);
+    int delay = dx;
+    std::cout << delay;
+    bool flip = false;
     if (dy > dx) {
-        flip = 1;
+        flip = true;
         int temp = dx;
         dx = dy;
         dy = temp;
     };
-    if (midpoint == false) {
+    if (!midpoint) {
         error = 2*dy - dx;
     } else {
         delay++;
@@ -40,29 +42,39 @@ int brese(int x0, int y0, int x1, int y1, int pixelSize, bool midpoint = false) 
         };
         error = ey - ex;
     };
-    for(int i; i < delay; i++) {
+    for(int i = 0; i < delay; i++) {
+        pixel(x0, y0, pixelSize);
+        pixel(x1, y1, pixelSize);
+        if (error >= 0) {
+            error += (2 * dy - 2 * dx);
+            x0 += cx;
+            y0 += cy;
+        } else {
+            error += (2 * dy);
+            if (flip) {
+                y0 += cy;
+            } else {
+                x0 += cx;
+            }
+        };
     }
-    pixel(0, 0, pixelSize);
     return 0;
 }
 
 int main() {
     //initiate window to correct size
-    std::cout << "SUCCESSFUL";
-    int size = 31;
+    int size = 32;
     int pixelSize = 40;
     int resolution = pixelSize * size;
     initwindow(resolution, resolution);
     //grid creation
     for (int i = 0; i < resolution; i += pixelSize) {
-        //std::cout << i << "\n";
-        std::cout << "TEST";
         rectangle(i, 0, i, resolution);
         rectangle(0, i, resolution, i);
     };
-    brese(0, 0, 10, 10, pixelSize, false);
+    brese(0, 0, 31, 5, pixelSize, false);
     refresh();
-    getch();
+    std::cout << getch();
     return 0;
 };
 
